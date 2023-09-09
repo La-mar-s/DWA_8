@@ -186,6 +186,8 @@ document.querySelector("[data-list-button]").addEventListener("click", () => {
   page += 1;
 });
 
+// did encapsilation here
+
 document
   .querySelector("[data-list-items]")
   .addEventListener("click", dataList)
