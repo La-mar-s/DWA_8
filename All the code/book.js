@@ -31,10 +31,7 @@ function themeChanger(event) {
     document.documentElement.style.setProperty("--color-light", "10, 10, 20");
   } else {
     document.documentElement.style.setProperty("--color-dark", "10, 10, 20");
-    document.documentElement.style.setProperty(
-      "--color-light",
-      "255, 255, 255"
-    );
+    document.documentElement.style.setProperty("--color-light","255, 255, 255");
   }
 
   document.querySelector("[data-settings-overlay]").open = false;
@@ -64,11 +61,9 @@ function dataList (event) {
       document.querySelector("[data-list-blur]").src = active.image;
       document.querySelector("[data-list-image]").src = active.image;
       document.querySelector("[data-list-title]").innerText = active.title;
-      document.querySelector("[data-list-subtitle]").innerText = `${
-        authors[active.author]
+      document.querySelector("[data-list-subtitle]").innerText = `${authors[active.author]
       } (${new Date(active.published).getFullYear()})`;
-      document.querySelector("[data-list-description]").innerText =
-        active.description;
+      document.querySelector("[data-list-description]").innerText = active.description;
      }
     }};
     export {dataList}
