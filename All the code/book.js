@@ -1,11 +1,12 @@
-import {books, authors, genres, BOOKS_PER_PAGE} from './data.js';
+import { books, authors, genres, BOOKS_PER_PAGE } from "./data.js";
 
-function createPreviewElement({ author, id, image, title }) {
-  const element = document.createElement("button");
-  element.classList = "preview";
-  element.setAttribute("data-preview", id);
+function PreviewBookFactory () {
+  function createPreviewElement({ author, id, image, title }) {
+    const element = document.createElement("button");
+    element.classList = "preview";
+    element.setAttribute("data-preview", id);
 
-  element.innerHTML = `
+    element.innerHTML = `
         <img
             class="preview__image"
             src="${image}"
@@ -17,32 +18,28 @@ function createPreviewElement({ author, id, image, title }) {
         </div>
     `;
 
-  return element;
-}
-export {createPreviewElement}
-
-function themeChanger(event) {
-  event.preventDefault();
-  const formData = new FormData(event.target);
-  const { theme } = Object.fromEntries(formData);
-
-  if (theme === "night") {
-    document.documentElement.style.setProperty("--color-dark", "255, 255, 255");
-    document.documentElement.style.setProperty("--color-light", "10, 10, 20");
-  } else {
-    document.documentElement.style.setProperty("--color-dark", "10, 10, 20");
-    document.documentElement.style.setProperty("--color-light","255, 255, 255");
+    return element;
   }
 
-  document.querySelector("[data-settings-overlay]").open = false;
-}
+  function themeChanger(theme) {
+    const root = document.documentElement;
+    if (theme === "night") {
+      root.style.setProperty(
+        "--color-dark",
+        "255, 255, 255"
+      );
+      root.style.setProperty("--color-light", "10, 10, 20");
+    } else {
+      root.style.setProperty("--color-dark", "10, 10, 20");
+      root.style.setProperty(
+        "--color-light",
+        "255, 255, 255"
+      );
+    }
+  }
 
-export { themeChanger };
-
-function dataList (event) {
-    const pathArray = Array.from(event.path || event.composedPath());
+  function dataList(pathArray, books) {
     let active = null;
-
     for (const node of pathArray) {
       if (active) break;
 
@@ -57,13 +54,36 @@ function dataList (event) {
         active = result;
       }
       if (active) {
-      document.querySelector("[data-list-active]").open = true;
-      document.querySelector("[data-list-blur]").src = active.image;
-      document.querySelector("[data-list-image]").src = active.image;
-      document.querySelector("[data-list-title]").innerText = active.title;
-      document.querySelector("[data-list-subtitle]").innerText = `${authors[active.author]
-      } (${new Date(active.published).getFullYear()})`;
-      document.querySelector("[data-list-description]").innerText = active.description;
-     }
-    }};
-    export {dataList}
+        document.querySelector("[data-list-active]").open = true;
+        document.querySelector("[data-list-blur]").src = active.image;
+        document.querySelector("[data-list-image]").src = active.image;
+        document.querySelector("[data-list-title]").innerText = active.title;
+        document.querySelector("[data-list-subtitle]").innerText = `${
+          authors[active.author]
+        } (${new Date(active.published).getFullYear()})`;
+        document.querySelector("[data-list-description]").innerText =
+          active.description;
+      }
+    }
+  }
+  return {
+    createPreviewElement,
+    themeChanger,
+    dataList,
+  };
+};
+
+export const bookFactory = PreviewBookFactory()
+
+// do this for the whole file(get rid of the exports)
+// const factory = () => {
+//   function a() {}
+//   function b() {}
+//   function c() {}
+
+//   return {
+//     a,
+//     b,
+//     c,
+//   };
+// };

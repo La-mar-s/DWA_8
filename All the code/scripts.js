@@ -1,7 +1,7 @@
 // Fully working scripts.js file
 
 import { books, authors, genres, BOOKS_PER_PAGE } from "./data.js";
-import { createPreviewElement, themeChanger , dataList} from "./book.js";
+import { bookFactory } from "./book.js";
 
 let page = 1;
 let matches = books;
@@ -10,10 +10,10 @@ const starting = document.createDocumentFragment();
 
 // preview abstraction
 
- const startingFragment = document.createDocumentFragment();
+const startingFragment = document.createDocumentFragment();
 
 for (const book of matches.slice(0, BOOKS_PER_PAGE)) {
-  const element = createPreviewElement(book);
+  const element = bookFactory.createPreviewElement(book);
   startingFragment.appendChild(element);
 }
 
@@ -49,18 +49,15 @@ for (const [id, name] of Object.entries(authors)) {
 
 document.querySelector("[data-search-authors]").appendChild(authorsHtml);
 
-
 if (
   window.matchMedia &&
   window.matchMedia("(prefers-color-scheme: dark)").matches
 ) {
   document.querySelector("[data-settings-theme]").value = "night";
-  document.documentElement.style.setProperty("--color-dark", "255, 255, 255");
-  document.documentElement.style.setProperty("--color-light", "10, 10, 20");
+  bookFactory.themeChanger("night");
 } else {
   document.querySelector("[data-settings-theme]").value = "day";
-  document.documentElement.style.setProperty("--color-dark", "10, 10, 20");
-  document.documentElement.style.setProperty("--color-light", "255, 255, 255");
+  bookFactory.themeChanger("day");
 }
 
 document.querySelector("[data-list-button]").innerText = `Show more (${
@@ -105,15 +102,18 @@ document.querySelector("[data-list-close]").addEventListener("click", () => {
 
 //abraction done-ish (for the themeChanger)
 
-document
-  .querySelector("[data-settings-form]")
-  .addEventListener("submit", themeChanger);
+document.querySelector("[data-settings-form]").addEventListener("submit", (event) => {
 
-  //try abstraction
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    const { theme } = Object.fromEntries(formData);
 
-document
-  .querySelector("[data-search-form]")
-  .addEventListener("submit", (event) => {
+    bookFactory.themeChanger(theme);
+        document.querySelector("[data-settings-overlay]").open = false;
+  });
+//try abstraction
+
+document.querySelector("[data-search-form]").addEventListener("submit", (event) => {
     event.preventDefault();
     const formData = new FormData(event.target);
     const filters = Object.fromEntries(formData);
@@ -177,8 +177,11 @@ document.querySelector("[data-list-button]").addEventListener("click", () => {
 
   //preview image abstraction
 
-  for (const book of matches.slice((BOOKS_PER_PAGE*page),( BOOKS_PER_PAGE*(page+1)))) {
-    const element = createPreviewElement(book);
+  for (const book of matches.slice(
+    BOOKS_PER_PAGE * page,
+    BOOKS_PER_PAGE * (page + 1)
+  )) {
+    const element = bookFactory.createPreviewElement(book);
     startingFragment.appendChild(element);
   }
 
@@ -186,10 +189,13 @@ document.querySelector("[data-list-button]").addEventListener("click", () => {
   page += 1;
 });
 
-// did encapsilation here
+// did encapsilation here(bookshowing)
 
 document
   .querySelector("[data-list-items]")
-  .addEventListener("click", dataList)
+  .addEventListener("click", (event) => {
 
-    
+  const pathArray = Array.from(event.path || event.composedPath());
+  
+  bookFactory.dataList(pathArray , matches);
+  });
