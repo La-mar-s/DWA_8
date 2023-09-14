@@ -1,6 +1,7 @@
 import { books, authors, genres, BOOKS_PER_PAGE } from "./data.js";
 
 function PreviewBookFactory () {
+
   function createPreviewElement({ author, id, image, title }) {
     const element = document.createElement("button");
     element.classList = "preview";
@@ -75,15 +76,3 @@ function PreviewBookFactory () {
 
 export const bookFactory = PreviewBookFactory()
 
-// do this for the whole file(get rid of the exports)
-// const factory = () => {
-//   function a() {}
-//   function b() {}
-//   function c() {}
-
-//   return {
-//     a,
-//     b,
-//     c,
-//   };
-// };
