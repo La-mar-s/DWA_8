@@ -102,18 +102,21 @@ document.querySelector("[data-list-close]").addEventListener("click", () => {
 
 //abraction done-ish (for the themeChanger)
 
-document.querySelector("[data-settings-form]").addEventListener("submit", (event) => {
-
+document
+  .querySelector("[data-settings-form]")
+  .addEventListener("submit", (event) => {
     event.preventDefault();
     const formData = new FormData(event.target);
     const { theme } = Object.fromEntries(formData);
 
     bookFactory.themeChanger(theme);
-        document.querySelector("[data-settings-overlay]").open = false;
+    document.querySelector("[data-settings-overlay]").open = false;
   });
 //try abstraction
 
-document.querySelector("[data-search-form]").addEventListener("submit", (event) => {
+document
+  .querySelector("[data-search-form]")
+  .addEventListener("submit", (event) => {
     event.preventDefault();
     const formData = new FormData(event.target);
     const filters = Object.fromEntries(formData);
@@ -194,8 +197,7 @@ document.querySelector("[data-list-button]").addEventListener("click", () => {
 document
   .querySelector("[data-list-items]")
   .addEventListener("click", (event) => {
+    const pathArray = Array.from(event.path || event.composedPath());
 
-  const pathArray = Array.from(event.path || event.composedPath());
-  
-  bookFactory.dataList(pathArray , matches);
+    bookFactory.dataList(pathArray, matches);
   });
