@@ -1,7 +1,6 @@
 import { books, authors, genres, BOOKS_PER_PAGE } from "./data.js";
 
-function PreviewBookFactory () {
-
+function PreviewBookFactory() {
   function createPreviewElement({ author, id, image, title }) {
     const element = document.createElement("button");
     element.classList = "preview";
@@ -25,17 +24,11 @@ function PreviewBookFactory () {
   function themeChanger(theme) {
     const root = document.documentElement;
     if (theme === "night") {
-      root.style.setProperty(
-        "--color-dark",
-        "255, 255, 255"
-      );
+      root.style.setProperty("--color-dark", "255, 255, 255");
       root.style.setProperty("--color-light", "10, 10, 20");
     } else {
       root.style.setProperty("--color-dark", "10, 10, 20");
-      root.style.setProperty(
-        "--color-light",
-        "255, 255, 255"
-      );
+      root.style.setProperty("--color-light", "255, 255, 255");
     }
   }
 
@@ -72,7 +65,6 @@ function PreviewBookFactory () {
     themeChanger,
     dataList,
   };
-};
+}
 
-export const bookFactory = PreviewBookFactory()
-
+export const bookFactory = PreviewBookFactory();
